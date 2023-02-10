@@ -5,8 +5,8 @@
 import coloredlogs, logging
 coloredlogs.install()
 from .mtnet import MTNet_xs, MTNet_s, MTNet_m, MTNet_l, MTNet_xl, MTNet_xxl, MTNet_xs_g8, MTNet_s_g8, MTNet_m_g8, MTNet_l_g8
-from .resnet import r3d_18, r3d_34, r3d_50, r3d_101, r3d_152, r3d_200, r3dxt50_32x4d, r3dxt101_32x8d, wide_r3d50_2,wide_r3d101_2, r2plus1d_18, r2plus1d_34, r2plus1d_50, r2plus1d_101, r2plus1d_152, r2plus1d_200, r2plus1dxt50_32x4d, r2plus1dxt101_32x8d, wide_r2plus1d50_2,wide_r2plus1d101_2
-
+from .resnet import r3d_18, r3d_34, r3d_50, r3d_101, r3d_152, r3d_200, r3dxt50_32x4d, r3dxt101_32x8d, wide_r3d50_2,wide_r3d101_2
+#r2plus1d_18, r2plus1d_34, r2plus1d_50, r2plus1d_101, r2plus1d_152, r2plus1d_200, r2plus1dxt50_32x4d, r2plus1dxt101_32x8d, wide_r2plus1d50_2,wide_r2plus1d101_2
 from .swin import get_swin_ssv2
 
 from .tempr_h import TemPr_h
@@ -23,8 +23,8 @@ from einops.layers.torch import Reduce, Rearrange
 from ptflops import get_model_complexity_info
 from torchinfo import summary
 
-import adapool_cuda
-from adaPool import IDWPool1d, EMPool1d, EDSCWPool1d, AdaPool1d
+# import adapool_cuda
+# from adaPool import IDWPool1d, EMPool1d, EDSCWPool1d, AdaPool1d
 
 
 
@@ -133,27 +133,27 @@ def get_symbol(name, samplers, pool=None, headless=False, **kwargs):
         else:
             net = wide_r3d101_2(**kwargs, return_acts=True)
     # Res_net (2+1)D
-    elif "R2PLUS1D" in name.upper():
-        if "R2PLUS1D_18" in name.upper():
-            net = r2plus1d_18(**kwargs, return_acts=True)
-        elif "R2PLUS1D_34" in name.upper():
-            net = r2plus1d_34(**kwargs, return_acts=True)
-        elif "R2PLUS1D_50" in name.upper():
-            net = r2plus1d_50(**kwargs, return_acts=True)
-        elif "R2PLUS1D_101" in name.upper():
-            net = r2plus1d_101(**kwargs, return_acts=True)
-        elif "R2PLUS1D_152" in name.upper():
-            net = r2plus1d_152(**kwargs, return_acts=True)
-        elif "R2PLUS1D_200" in name.upper():
-            net = r2plus1d_200(**kwargs, return_acts=True)
-        elif "R2PLUS1DXT50" in name.upper():
-            net = r2plus1dxt50_32x4d(**kwargs, return_acts=True)
-        elif "R2PLUS1DXT101" in name.upper():
-            net = r2plus1dxt101_32x8d(**kwargs, return_acts=True)
-        elif "WIDE_R2PLUS1D50" in name.upper():
-            net = wide_r2plus1d50_2(**kwargs, return_acts=True)
-        else:
-            net = wide_r2plus1d101_2(**kwargs, return_acts=True)
+    # elif "R2PLUS1D" in name.upper():
+    #     if "R2PLUS1D_18" in name.upper():
+    #         net = r2plus1d_18(**kwargs, return_acts=True)
+    #     elif "R2PLUS1D_34" in name.upper():
+    #         net = r2plus1d_34(**kwargs, return_acts=True)
+    #     elif "R2PLUS1D_50" in name.upper():
+    #         net = r2plus1d_50(**kwargs, return_acts=True)
+    #     elif "R2PLUS1D_101" in name.upper():
+    #         net = r2plus1d_101(**kwargs, return_acts=True)
+    #     elif "R2PLUS1D_152" in name.upper():
+    #         net = r2plus1d_152(**kwargs, return_acts=True)
+    #     elif "R2PLUS1D_200" in name.upper():
+    #         net = r2plus1d_200(**kwargs, return_acts=True)
+    #     elif "R2PLUS1DXT50" in name.upper():
+    #         net = r2plus1dxt50_32x4d(**kwargs, return_acts=True)
+    #     elif "R2PLUS1DXT101" in name.upper():
+    #         net = r2plus1dxt101_32x8d(**kwargs, return_acts=True)
+    #     elif "WIDE_R2PLUS1D50" in name.upper():
+    #         net = wide_r2plus1d50_2(**kwargs, return_acts=True)
+    #     else:
+    #         net = wide_r2plus1d101_2(**kwargs, return_acts=True)
     else:
         logging.error("network '{}'' not implemented".format(name))
         raise NotImplementedError()
@@ -179,14 +179,14 @@ def get_pooling(name, samplers):
         pool = torch.nn.AdaptiveAvgPool1d((1))
     elif name.upper() == 'MAX':
         pool = torch.nn.AdaptiveMaxPool1d((1))
-    elif name.upper() == 'EM':
-        pool = EMPool1d(kernel_size=(samplers))
-    elif name.upper() == 'EDSCW':
-        pool = EDSCWPool1d(kernel_size=(samplers))
-    elif name.upper() == 'IDW':
-        pool = IDWPool1d(kernel_size=(samplers))
-    elif name.upper() == 'ADA':
-        pool = AdaPool1d(kernel_size=(samplers), beta=(1))
+    # elif name.upper() == 'EM':
+    #     pool = EMPool1d(kernel_size=(samplers))
+    # elif name.upper() == 'EDSCW':
+    #     pool = EDSCWPool1d(kernel_size=(samplers))
+    # elif name.upper() == 'IDW':
+    #     pool = IDWPool1d(kernel_size=(samplers))
+    # elif name.upper() == 'ADA':
+    #     pool = AdaPool1d(kernel_size=(samplers), beta=(1))
     else:
         logging.error("Pooling method '{}'' not implemented".format(name))
         raise NotImplementedError()
@@ -270,7 +270,7 @@ class Combined(torch.nn.Module):
         self.rarrange = torch.nn.Sequential(
                              Rearrange('b s c -> s b c'))
 
-        if pool is not 'none' and pool is not None:
+        if pool != 'none' and pool is not None:
             pool = get_pooling(pool, samplers=self.samplers)
             make_contiguous = Contiguous()
             self.pred_fusion = torch.nn.Sequential(
