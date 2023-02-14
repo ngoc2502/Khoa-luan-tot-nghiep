@@ -14,11 +14,14 @@ import time
 from concurrent.futures import ProcessPoolExecutor as Pool
 
 
+
 '''
 ---  S T A R T  O F  F U N C T I O N  F I L E 2 S Q L  ---
 
     [About]
-        Worker function that takes as argument the frames directory and converts all JPEG images inside that directory to SQLite3 BLOBS. For inode preservation after a file has been read it is deleted. The function will iteratively populate the `frames.db` file of the given directory with all the frames.
+        Worker function that takes as argument the frames directory and converts all JPEG images inside that 
+        directory to SQLite3 BLOBS.For inode preservation after a file has been read it is deleted. 
+        The function will iteratively populate the `frames.db` file of the given directory with all the frames.
     [Args]
         - video_i: String that determines the directory which includes all the video frames in a .jpg format.
     [Returns]
@@ -61,8 +64,6 @@ def file2sql(video_i):
 '''
 ---  E N D  O F  F U N C T I O N  F I L E 2 S Q L  ---
 '''
-
-
 
 
 
