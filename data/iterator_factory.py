@@ -49,8 +49,8 @@ from . import video_sampler as sampler
     [Returns]
         - Tuple for training VideoIter object and validation VideoIter object.
 '''
-def get_data(data_dir=os.path.join('data','UCF-101'),
-             labels_dir=os.path.join('data','UCF-101'),
+def get_data(data_dir=('../input/ucf101/UCF101/UCF-101'),
+             labels_dir=('../input/ucf101/UCF101/UCF-101'),
              eval_only=False,
              video_per_train=.6,
              video_per_val=.6,
