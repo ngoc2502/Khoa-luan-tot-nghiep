@@ -62,7 +62,7 @@ parser.add_argument('--num_samplers', type=int, default=3,
 # data loading parser arguments
 parser.add_argument('--dataset', default='HACS', choices=datasets,
                     help="name of the dataset")
-parser.add_argument('--data_dir', default='data/',
+parser.add_argument('--data_dir', default='/kaggle/input/ucf101/UCF101/UCF-101',
                     help="path for the video files \n ---- Note that the allowed formats are: ---- \n -> video (.mp4, .mpeg, .avi) \n -> image (.jpg, .jpeg, .png) \n -> SQL with frames encoded as BLOBs (.sql) \n See advice in the README about the directory structure.")
 parser.add_argument('--label_dir', default='labels/',
                     help="path for the label files associated with the dataset.")
