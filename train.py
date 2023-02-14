@@ -62,7 +62,7 @@ parser.add_argument('--num_samplers', type=int, default=3,
 # data loading parser arguments
 parser.add_argument('--dataset', default='HACS', choices=datasets,
                     help="name of the dataset")
-parser.add_argument('--data_dir', default='/kaggle/input/ucf101/UCF101/UCF-101',
+parser.add_argument('--data_dir', default='../input/ucf101/UCF101/UCF-101',
                     help="path for the video files \n ---- Note that the allowed formats are: ---- \n -> video (.mp4, .mpeg, .avi) \n -> image (.jpg, .jpeg, .png) \n -> SQL with frames encoded as BLOBs (.sql) \n See advice in the README about the directory structure.")
 parser.add_argument('--label_dir', default='labels/',
                     help="path for the label files associated with the dataset.")
@@ -339,7 +339,7 @@ if __name__ == "__main__":
         clip_size=clip_size,
         val_clip_length=clip_length,
         val_clip_size=clip_size,
-        include_timeslices = dataset_cfg['include_timeslices'],
+        # include_timeslices = dataset_cfg['include_timeslices'],
         train_interval=args.train_frame_interval,
         val_interval=args.val_frame_interval,
         mean=input_conf['mean'],
@@ -608,7 +608,7 @@ if __name__ == "__main__":
         clip_size=clip_size,
         val_clip_length=clip_length,
         val_clip_size=clip_size,
-        include_timeslices = dataset_cfg['include_timeslices'],
+        # include_timeslices = dataset_cfg['include_timeslices'],
         val_interval=args.val_frame_interval,
         mean=input_conf['mean'],
         std=input_conf['std'],
