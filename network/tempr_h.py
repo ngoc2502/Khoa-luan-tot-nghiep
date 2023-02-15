@@ -36,7 +36,7 @@ def fourier_encode(x, max_freq, num_bands = 4):
 
     x = x * scales * pi # [T, H, W, T, num_bands]
     x = torch.cat([x.sin(), x.cos()], dim = -1) # [T, H, W, T, 2 x num_bands]
-    x = torch.cat((x, orig_x), dim = -1) # [T, H, W, T, (2 x num_bands)+1]
+    x = torch.cat((x,  ), dim = -1) # [T, H, W, T, (2 x num_bands)+1]
     return x
 
 
@@ -218,6 +218,7 @@ class TemPr_h(nn.Module):
                 get_cross_ff(**cache_args),
                 self_attns
             ]))
+
 
         self.reduce = nn.Sequential(
             Reduce('s b n d -> s b d', 'mean'),

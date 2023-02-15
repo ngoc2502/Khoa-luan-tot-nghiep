@@ -119,7 +119,7 @@ parser.add_argument('--gpus', default=[0,1], nargs='+',
 parser.add_argument('--pretrained_dir', type=str,  default=None,
                     help="load pretrained model from path. This can be used for either the backbone or head alone or both. Leave empty when training from scratch.")
 
-parser.add_argument('--backbone', type=str, default='r3d_18',
+parser.add_argument('--backbone', type=str, default= 'r3d_18',
                     help="chose the backbone architecture. See `network` dir for more info.")
 parser.add_argument('--head', type=str, default='Tempr_h',
                     help="chose the head architecture. See `network` dir for more info.")
@@ -292,6 +292,8 @@ if __name__ == "__main__":
                 step_callback_freq=1,
                 save_checkpoint_freq=args.save_frequency)
     net.net.cuda()
+
+
 
     # Make results directory for .csv files if it does not exist
     ratio = 'observation_ratio_'+str(args.video_per)

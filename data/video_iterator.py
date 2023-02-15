@@ -185,7 +185,6 @@ class Video(object):
         - __len__ : Returning the length/size of the dataset.
         - indices_list: Return the list of video indices.
         - get_video_dict : Main function for creating the video dictionary. Taks as arguments the location of the dataset (directory) the filepath to the .CSV file containing the dataset info and a boolean variable named include_timeslices which is used in the instance that the video folders also include the time segments in their name (defualts to False).
-
 '''
 class VideoIter(data.Dataset):
 

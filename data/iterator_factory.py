@@ -210,7 +210,6 @@ def get_data(data_dir=('../input/ucf101/UCF101/UCF-101'),
 
     [About]
         Function for creating iterable datasets.
-
     [Args]
         - batch_size: Integer for the size of each batch.
         - return_len: Boolean for returning the length of the dataset. Defaults to False.
