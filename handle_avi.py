@@ -43,5 +43,13 @@ def save_video_frames_as_jpg(video_path):
 
     print(f"Saved {frame_number} frames to {frames_folder} and created {frames_db}")
 
+def process_avi_videos_in_folder(folder_path):
+    for video_file_name in os.listdir(folder_path):
+        if video_file_name.endswith(".avi"):
+            video_path = os.path.join(folder_path, video_file_name)
+            save_video_frames_as_jpg(video_path)
+
 #Check function 
-save_video_frames_as_jpg('check.avi')
+# save_video_frames_as_jpg('cat.avi')
+
+process_avi_videos_in_folder('avi_data_check')
