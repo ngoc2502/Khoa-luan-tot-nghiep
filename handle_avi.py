@@ -43,7 +43,5 @@ def save_video_frames_as_jpg(video_path):
 
     print(f"Saved {frame_number} frames to {frames_folder} and created {frames_db}")
 
-
 #Check function 
 save_video_frames_as_jpg('check.avi')
-
