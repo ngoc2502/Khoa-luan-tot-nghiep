@@ -5,7 +5,7 @@ debug_mode: True
 video_per: .3
 dataset:  UCF-101
 precision: mixed
-data_dir: ./data/UCF-101_videos
+data_dir: ../input/ucf101/UCF101/UCF-101
 label_dir: ./labels/UCF-101/split1
 
 # model params
