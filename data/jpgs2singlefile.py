@@ -71,35 +71,44 @@ def file2sql(video_i):
 ---  S T A R T  O F  F U N C T I O N  W O R K E R  ---
 
     [About]
-        Main worker function for saving .mp4 videos as .jpg frames (also creates a frames.db SQL database per video).
+        Main worker function for saving .avi videos as .jpg frames (also creates a frames.db SQL database per video).
     [Args]
         - file_i: String for the filepath.
     [Returns]
         - None
 '''
 def worker(file_i):
+    #FIX
+    dst_dir="data_videos/jpg/"
     # Feedback message
     print('process #{} is converting file: {}'.format(multiprocessing.current_process().name,file_i))
     sys.stdout.flush()
 
     # Only consider videos
     #Add note
-    if '.mp4' not in file_i:
+    if '.avi' not in file_i:
       return
-
     # Get file without .mp4 extension
     name, ext = os.path.splitext(file_i)
-    name = os.path.join(*(name.split(os.path.sep)[1:]))
+    #name = os.path.join(*(name.split(os.path.sep)[1:]))
 
     # Create destination directory for video
-    dst_directory_path = os.path.join(dst_dir, name)
+    # FIX
 
+    dir_sep = name.split(os.path.sep)
+    head_dir=dir_sep[0].split('/')
+    name = os.path.join(head_dir[1], dir_sep[-1])
+    name=name.replace('\\','\\\\')
+
+    dst_directory_path = os.path.join(dst_dir, name)
     try:
         # Case that video path already exists
         if os.path.exists(dst_directory_path):
             # Case that frames have already been extracted
             if not os.path.exists(os.path.join(dst_directory_path, 'frame_00001.jpg')):
-                subprocess.call('rm -r {}'.format(dst_directory_path), shell=True)
+                #subprocess.call('del -r {}'.format(dst_directory_path), shell=True)
+                #FIX
+                subprocess.call('del /s /q "{}"'.format(dst_directory_path), shell=True)
                 print('remove {}'.format(dst_directory_path))
                 os.makedirs(dst_directory_path)
             else:
@@ -149,22 +158,23 @@ if __name__ == '__main__':
 
     start = time.time()
     #SQLITE
-    base_dir = 'kinetics/'
-    dst_dir = 'kinetics_videos/jpg'
+    base_dir = 'avi_data_check/'
+    dst_dir = 'data_videos/jpg'
 
     #--- Extract files from folder following pattern
-    files   = glob.glob(base_dir+"*/*.mp4")
+    files   = glob.glob(base_dir+"*/*.avi")
     n_files = len(files)
     print('Number of files in folder: ', n_files)
 
 
     for c in os.listdir(base_dir):
-
         # --- FRAME EXTRACTION IS DONE HERE
-        base_files = glob.glob(os.path.join(base_dir,c)+"/*.mp4")
+        base_files = glob.glob(os.path.join(base_dir,c)+"/*.avi")
+        dist_files = glob.glob(os.path.join(dst_dir,c)+"/*")
+
         try:
             with Pool() as p1:
-                p1.map(worker, base_files)
+                p1.map(worker,base_files)
 
         except KeyboardInterrupt:
             print ("Caught KeyboardInterrupt, terminating")
@@ -172,7 +182,6 @@ if __name__ == '__main__':
             p1.join()
 
         # --- DATABASE POPULATION IS DONE HERE
-        dist_files = glob.glob(os.path.join(dst_dir,c)+"/*")
         try:
             with Pool() as p2:
                 p2.map(file2sql, dist_files)
