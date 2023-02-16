@@ -505,7 +505,7 @@ class VideoResNet(nn.Module):
 
     def __init__(self, block, conv_makers, layers,
                  stem, num_classes=400, groups=1, width_per_group=64,
-                 zero_init_residual=False):
+                 zero_init_residual=False,**kwarg):
 
         super(VideoResNet, self).__init__()
         self.inplanes = 64
