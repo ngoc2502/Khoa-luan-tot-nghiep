@@ -12,7 +12,6 @@ coloredlogs.install()
 
     [About]
         Class for random sampling frames based on a uniform distribution and a sampling interval.
-
     [Init Args]
         - num: Integer for number of frames.
         - interval: Interger for the sampling interval. Defaults to 1.

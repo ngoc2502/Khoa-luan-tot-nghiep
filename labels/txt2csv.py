@@ -52,5 +52,8 @@ def load_train_test(train_file, val_file):
 file_pairs = [['UCF-101/trainlist01.txt','UCF-101/testlist01.txt'],
               ['UCF-101/trainlist02.txt','UCF-101/testlist02.txt'],
               ['UCF-101/trainlist03.txt','UCF-101/testlist03.txt']]
+
 for f_pair in file_pairs:
     load_train_test(f_pair[0],f_pair[1])
+
+

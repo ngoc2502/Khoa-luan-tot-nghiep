@@ -83,6 +83,7 @@ def worker(file_i):
     sys.stdout.flush()
 
     # Only consider videos
+    #Add note
     if '.mp4' not in file_i:
       return
 

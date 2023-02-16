@@ -34,7 +34,6 @@ def load_json(json_path,parent_path):
     with open(json_path) as f:
         videos = json.load(f)
 
-
     start_time = time.time()
     # Iterate over json elements
     for i,vid in enumerate(videos):
@@ -46,6 +45,7 @@ def load_json(json_path,parent_path):
         paths_dir[path] = class_names[l]
 
     return paths_dir
+
 '''
 ---  E N D  O F  F U N C T I O N  L O A D _ J S O N  ---
 '''

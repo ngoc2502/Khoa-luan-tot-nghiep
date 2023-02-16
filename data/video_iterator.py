@@ -281,8 +281,6 @@ class VideoIter(data.Dataset):
         #print('Processed item w/ index: ',v_id, 'and shape',sampled_frames.shape)
         return sampled_frames, label, vid_path
 
-
-
     def __getitem__(self, index):
         succ = False
         while not succ:
@@ -342,8 +340,6 @@ class VideoIter(data.Dataset):
         # - processed_ids: List of all ids_processed in the current logging_interval
         # - labels_dict: Dictionary for associating string labels with ints
         # - labels_last_index: Integer of keeping track of the integers used
-
-
         videos_dict = {}
         logging_interval = 10000
         found_videos = 0

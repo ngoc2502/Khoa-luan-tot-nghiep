@@ -9,7 +9,9 @@ def find_frames(dataset_path):
         # Get number of video frames
         con = sqlite3.connect(video_file)
         cur = con.cursor()
+        #count the number of frames in a video
         cur.execute("SELECT COUNT (*) FROM Images")
+        #retrieve the result of the query, which is the count of the number of frames.
         result=cur.fetchone()
         n_frames = result[0]
         cur.close()
@@ -24,3 +26,4 @@ def find_frames(dataset_path):
 
         with open(os.path.join(video_file.split('/frames')[0], 'n_frames'), 'w') as dst_file:
             dst_file.write(str(n_frames))
+

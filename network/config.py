@@ -23,7 +23,6 @@ def get_config(name, **kwargs):
     config['mean'] = [124 / 255, 117 / 255, 104 / 255]
     config['std'] = [1 / (.0167 * 255)] * 3
 
-
     return config
 '''
 ---  E N D  O F  F U N C T I O N  G E T _ C O N F I G ---
