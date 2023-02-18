@@ -49,9 +49,9 @@ def load_train_test(train_file, val_file):
     (pd.DataFrame.from_dict(data=true_dict).to_csv(true_file, header=True, sep=',', index=False))
 
 
-file_pairs = [['UCF-101/trainlist01.txt','UCF-101/testlist01.txt'],
-              ['UCF-101/trainlist02.txt','UCF-101/testlist02.txt'],
-              ['UCF-101/trainlist03.txt','UCF-101/testlist03.txt']]
+file_pairs = [['UCF-101_mine/trainlist01.txt','UCF-101_mine/testlist01.txt'],
+              ['UCF-101_mine/trainlist02.txt','UCF-101_mine/testlist02.txt'],
+              ['UCF-101_mine/trainlist03.txt','UCF-101_mine/testlist03.txt']]
 
 for f_pair in file_pairs:
     load_train_test(f_pair[0],f_pair[1])
