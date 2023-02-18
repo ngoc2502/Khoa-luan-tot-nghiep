@@ -13,15 +13,14 @@ import subprocess
 import time
 from concurrent.futures import ProcessPoolExecutor as Pool
 
-
+base_dir = 'UCF-101\\'
+dst_dir = 'UCF-101_TM\\'
 
 '''
 ---  S T A R T  O F  F U N C T I O N  F I L E 2 S Q L  ---
 
     [About]
-        Worker function that takes as argument the frames directory and converts all JPEG images inside that 
-        directory to SQLite3 BLOBS.For inode preservation after a file has been read it is deleted. 
-        The function will iteratively populate the `frames.db` file of the given directory with all the frames.
+        Worker function that takes as argument the frames directory and converts all JPEG images inside that directory to SQLite3 BLOBS. For inode preservation after a file has been read it is deleted. The function will iteratively populate the `frames.db` file of the given directory with all the frames.
     [Args]
         - video_i: String that determines the directory which includes all the video frames in a .jpg format.
     [Returns]
@@ -67,6 +66,8 @@ def file2sql(video_i):
 
 
 
+
+
 '''
 ---  S T A R T  O F  F U N C T I O N  W O R K E R  ---
 
@@ -78,37 +79,28 @@ def file2sql(video_i):
         - None
 '''
 def worker(file_i):
-    #FIX
-    dst_dir="data_videos/jpg/"
+   
     # Feedback message
     print('process #{} is converting file: {}'.format(multiprocessing.current_process().name,file_i))
     sys.stdout.flush()
 
     # Only consider videos
-    #Add note
     if '.avi' not in file_i:
       return
-    # Get file without .mp4 extension
+
+    # Get file without .avi extension
     name, ext = os.path.splitext(file_i)
-    #name = os.path.join(*(name.split(os.path.sep)[1:]))
+    name = os.path.join(*(name.split(os.path.sep)[1:]))
 
     # Create destination directory for video
-    # FIX
-
-    dir_sep = name.split(os.path.sep)
-    head_dir=dir_sep[0].split('/')
-    name = os.path.join(head_dir[1], dir_sep[-1])
-    name=name.replace('\\','\\\\')
-
     dst_directory_path = os.path.join(dst_dir, name)
+
     try:
         # Case that video path already exists
         if os.path.exists(dst_directory_path):
             # Case that frames have already been extracted
             if not os.path.exists(os.path.join(dst_directory_path, 'frame_00001.jpg')):
-                #subprocess.call('del -r {}'.format(dst_directory_path), shell=True)
-                #FIX
-                subprocess.call('del /s /q "{}"'.format(dst_directory_path), shell=True)
+                subprocess.call('rm -r {}'.format(dst_directory_path), shell=True)
                 print('remove {}'.format(dst_directory_path))
                 os.makedirs(dst_directory_path)
             else:
@@ -117,19 +109,38 @@ def worker(file_i):
             os.makedirs(dst_directory_path)
             filename_db = os.path.join(dst_directory_path,'frames.db')
             create_db(filename_db)
-    except:
+    except: 
         print('Exception')
         print(dst_directory_path)
         return
 
     # FFMPEG frame extraction
-    subprocess.call(['ffmpeg', '-i', file_i, '-hide_banner', '-loglevel', 'quiet', '-vf', 'scale=-1:360', '{}/frame_%05d.jpg'.format(dst_directory_path)])
+    #subprocess.call(['ffmpeg', '-i', file_i, '-hide_banner', '-loglevel', 'quiet', '-vf', 'scale=-1:360', '{}/frame_%05d.jpg'.format(dst_directory_path)])
 
 '''
 ---  E N D  O F  F U N C T I O N  W O R K E R  ---
 '''
 
 
+def video2jpg(inpath,output_dir):
+    video = cv2.VideoCapture(inpath)
+    # Create the output directory if it does not exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    count = 0
+    # Loop through the frames
+    while True:
+        ret, frame = video.read()
+        # If the frame was not read successfully, break out of the loop
+        if not ret:
+            break
+
+        # Define the output file path for the current frame
+        output_path = os.path.join(output_dir, f'frame{count}.jpg')
+        cv2.imwrite(output_path, frame)
+        count += 1
+    video.release()
 
 
 '''
@@ -158,8 +169,7 @@ if __name__ == '__main__':
 
     start = time.time()
     #SQLITE
-    base_dir = 'avi_data_check/'
-    dst_dir = 'data_videos/jpg'
+
 
     #--- Extract files from folder following pattern
     files   = glob.glob(base_dir+"*/*.avi")
@@ -168,13 +178,13 @@ if __name__ == '__main__':
 
 
     for c in os.listdir(base_dir):
+
         # --- FRAME EXTRACTION IS DONE HERE
         base_files = glob.glob(os.path.join(base_dir,c)+"/*.avi")
-        dist_files = glob.glob(os.path.join(dst_dir,c)+"/*")
 
         try:
             with Pool() as p1:
-                p1.map(worker,base_files)
+                p1.map(worker, base_files)
 
         except KeyboardInterrupt:
             print ("Caught KeyboardInterrupt, terminating")
@@ -182,6 +192,15 @@ if __name__ == '__main__':
             p1.join()
 
         # --- DATABASE POPULATION IS DONE HERE
+        dist_files = glob.glob(os.path.join(dst_dir,c)+"/*")
+        try:
+            with Pool() as p3:
+                p3.map(video2jpg,base_files,dist_files)
+        except KeyboardInterrupt:
+            p3.terminate()
+            p3.join()
+            print("Error capture frame")
+
         try:
             with Pool() as p2:
                 p2.map(file2sql, dist_files)
