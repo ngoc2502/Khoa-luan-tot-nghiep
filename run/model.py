@@ -229,9 +229,9 @@ class static_model(object):
     def forward(self, data, target, precision):
         # Data conversion
         if precision=='mixed':
-            data = data.cuda().half()
+            data = data.cuda().half()# binary16 range of approximately 6.10^-5 to 6.55x10^4
         else:
-            data =  data.cuda().float()
+            data =  data.cuda().float()#  binary32)
         target = target.cuda()
 
         # Forward for training/evaluation
@@ -241,7 +241,7 @@ class static_model(object):
                     outputs = self.net(data)
             else:
                 outputs = self.net(data)
-        else:
+        else:   #disable gradient computation 
             with torch.no_grad():
                 if precision=='mixed':
                     with amp.autocast():
@@ -259,6 +259,7 @@ class static_model(object):
         # Use (loss) criterion if specified
         losses = []
         for out in o_list:
+            #check if the self has a criterion attribute
             if hasattr(self, 'criterion') and self.criterion is not None and target is not None:
                 if precision=='mixed':
                     with amp.autocast():
@@ -389,7 +390,14 @@ class model(static_model):
             scaler=None,
             samplers=4,
             **kwargs):
-
+        print()
+        print('train_iter =',train_iter)
+        print('optimiser =',optimiser)
+        print('lr_scheduler =',lr_scheduler)
+        print('long_short_steps_dir =',long_short_steps_dir)
+        print('no_cycles= ',no_cycles)
+        print(' **kwargs= ', **kwargs)
+        print()
         # Check kwargs used
         if kwargs:
             logging.warning("Unknown kwargs: {}".format(kwargs))
