@@ -6,8 +6,8 @@ video_per: .3
 num_latents: 256
 dataset:  UCF-101
 precision: mixed
-data_dir: UCF-101
-label_dir: UCF-101
+data_dir: data/UCF-101_mine/
+label_dir: labels/UCF-101_mine/
 
 # GPU-device related parser arguments & number of workers
 workers: 8
@@ -15,4 +15,3 @@ workers: 8
 # set batch size
 batch_size: 32
 frame_size: 224
-
