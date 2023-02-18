@@ -93,7 +93,7 @@ class Video(object):
         cur = con.cursor()
 
         # retrieve entire video from database (frames are unordered)
-        frame_names = ["{}/{}".format(self.path.split('/')[-1],'frame_%d'%(index+1)) for index in indices]
+        frame_names = ["{}/{}".format(self.path.split('/')[-1],'frame%d'%(index+1)) for index in indices]
         sql = "SELECT Objid, frames FROM Images WHERE ObjId IN ({seq})".format(seq=','.join(['?']*len(frame_names)))
         row = cur.execute(sql,frame_names)
 
@@ -105,7 +105,7 @@ class Video(object):
         # Video order re-arangement
         for ObjId, item in row:
             #--- Decode blob
-            nparr  = np.fromstring(item, np.uint8)
+            nparr  = np.frombuffer(item, np.uint8)
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
             ids.append(ObjId)
             frames.append(img)
