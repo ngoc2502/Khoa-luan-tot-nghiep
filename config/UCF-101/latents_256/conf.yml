@@ -10,7 +10,7 @@ data_dir: /kaggle/working/Khoa-luan-tot-nghiep/data/UCF-101_mine/
 label_dir: /kaggle/working/Khoa-luan-tot-nghiep/labels/UCF-101_mine/
 
 # GPU-device related parser arguments & number of workers
-workers: 8
+workers: 2
 
 # set batch size
 batch_size: 32
