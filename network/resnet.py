@@ -546,9 +546,9 @@ class VideoResNet(nn.Module):
         x = self.avgpool(x)
         # Flatten the layer to fc
         x = x.flatten(1)
-        x = self.fc(x)
+        pred = self.fc(x)
 
-        return x
+        return pred,x
 
     def _make_layer(self, block, conv_builder, planes, blocks, stride=1):
         downsample = None
