@@ -40,7 +40,8 @@ from einops import rearrange
         - open : Function for establishing a connection to the database file, given that the file actually exists. Will first try and reset all variables (through __reset__) and then create a connection (self.con) and cursor (self.cur) for database iterations. Taks as argument the video path string.
         - count_frames: Function for returning the number of elements/rows in the database (i.e. the number of saved frames).
         - extract_frames: High level function for extracting the frames in the database. The indices of the frames are given as an argument of type `list` which should hold EVERY index of the frames to be extracted.
-        - extract_frames_fast: Main function for iterating over database elements/frames and appending them in a numpy array befor returning the created array. Array length is created dynamically at the first iteration. Alongside the indices of frames, the function also takes as an argument if the frames are to be imported with colour or not (boolean variable).
+        - extract_frames_fast: Main function for iterating over database elements/frames and appending them in a numpy array befor returning the created array. Array length is created dynamically at the first iteration. 
+        Alongside the indices of frames, the function also takes as an argument if the frames are to be imported with colour or not (boolean variable).
 '''
 class Video(object):
     """basic Video class"""
@@ -344,7 +345,6 @@ class VideoIter(data.Dataset):
         logging_interval = 10000
         found_videos = 0
         processed_ids = []
-
 
         # Store dictionary of labels keys:'str' , values:'int' to a .JSON file (as a common reference between dataset sets)
         if ('train' in csv_file):
