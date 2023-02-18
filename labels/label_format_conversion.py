@@ -1,7 +1,7 @@
 import csv
 import os
 
-parent_dir = 'UCF-101'
+parent_dir = 'UCF-101_mine'
 label_files = ['trainlist01.txt', 'trainlist02.txt', 'trainlist03.txt', 'testlist01.txt', 'testlist02.txt', 'testlist03.txt']
 
 data_dict = {1:{'train':{},'test':{}},2:{'train':{},'test':{}},3:{'train':{},'test':{}}}
@@ -42,6 +42,3 @@ for s in data_dict.keys():
         for split in data_dict[s].keys():
             for key,value in data_dict[s][split].items():
                 writer.writerow([value,key,split])
-
-
-
