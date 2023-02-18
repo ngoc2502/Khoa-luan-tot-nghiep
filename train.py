@@ -291,6 +291,7 @@ if __name__ == "__main__":
                 model_prefix=model_prefix,
                 step_callback_freq=1,
                 save_checkpoint_freq=args.save_frequency)
+
     net.net.cuda()
 
 
@@ -502,9 +503,7 @@ if __name__ == "__main__":
     #   - `resume_epoch` != 0 and `pretrained_dir` is not None: Resume training (load entire "state_dict").
     #   - `resume_epoch` != 0 and `pretrained_dir` is None: N/A catch with assert
 
-
     assert not(args.resume_epoch != 0 and args.pretrained_dir is None), 'Initialiser::  Error in training configuration occured! Cannot use argument `resume_epoch` with non-zero integer without specifying the `pretrained_dir` string directory to load weights from!'
-
     # resume training: model and optimiser - (account of various batch sizes)
     if args.resume_epoch == 0:
         if args.pretrained_dir is None:
@@ -521,7 +520,6 @@ if __name__ == "__main__":
         epoch, _ = net.load_checkpoint(path=args.pretrained_dir, epoch=args.resume_epoch)
         epoch_start = args.resume_epoch # change if you are to use "state_dict"'s epoch
         step_counter = epoch_start * num_steps
-
 
         # Try to load previous state dict in case `pretrained_dir` is None
         if not args.pretrained_dir:
