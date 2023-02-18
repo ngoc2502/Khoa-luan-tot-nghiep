@@ -92,9 +92,8 @@ class Video(object):
         con = sqlite3.connect(self.video_path)
         cur = con.cursor()
 
-
         # retrieve entire video from database (frames are unordered)
-        frame_names = ["{}/{}".format(self.path.split('/')[-1],'frame_%05d'%(index+1)) for index in indices]
+        frame_names = ["{}/{}".format(self.path.split('/')[-1],'frame_%d'%(index+1)) for index in indices]
         sql = "SELECT Objid, frames FROM Images WHERE ObjId IN ({seq})".format(seq=','.join(['?']*len(frame_names)))
         row = cur.execute(sql,frame_names)
 
