@@ -543,9 +543,11 @@ class VideoResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
+        #(batch_size, channels, depth, height, width)
         x = self.avgpool(x)
         # Flatten the layer to fc
-        x_flat = x_flat.flatten(1)
+        x_flat=x
+        x_flat = x_flat.flatten(1) # (batch_size, channels * depth * height * width)
         pred = self.fc(x_flat)
 
         return pred,x
