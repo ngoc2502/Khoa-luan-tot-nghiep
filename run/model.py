@@ -590,6 +590,11 @@ class model(static_model):
                 while True:
                     forward = False
                     backward = False
+                    for loss in losses[:1]:
+                            if precision=='mixed':
+                                scaler.scale(loss).backward()
+                            else:
+                                loss.backward()                    
                     try:
                         # [forward] making next step
                         torch.cuda.empty_cache()
@@ -601,11 +606,7 @@ class model(static_model):
                         # [backward]
                         optimiser.zero_grad()
                         sum_backward_elapse = time.time()
-                        for loss in losses[:1]:
-                            if precision=='mixed':
-                                scaler.scale(loss).backward()
-                            else:
-                                loss.backward()
+
                         sum_backward_elapse = time.time() - sum_backward_elapse
                         lr = lr_scheduler.update()
                         batch_size = tuple(data.size())
