@@ -370,7 +370,14 @@ class model(static_model):
                 lr_mult = 1.0
             param_group['lr'] = lr * lr_mult
 
-
+        # print()
+        # print('train_iter =',train_iter)
+        # print('optimiser =',optimiser)
+        # print('lr_scheduler =',lr_scheduler)
+        # print('long_short_steps_dir =',long_short_steps_dir)
+        # print('no_cycles= ',no_cycles)
+        # print(' **kwargs= ', **kwargs)
+        # print()
     def fit(self,
             train_iter,
             optimiser,
@@ -390,14 +397,7 @@ class model(static_model):
             scaler=None,
             samplers=4,
             **kwargs):
-        print()
-        print('train_iter =',train_iter)
-        print('optimiser =',optimiser)
-        print('lr_scheduler =',lr_scheduler)
-        print('long_short_steps_dir =',long_short_steps_dir)
-        print('no_cycles= ',no_cycles)
-        print(' **kwargs= ', **kwargs)
-        print()
+
         # Check kwargs used
         if kwargs:
             logging.warning("Unknown kwargs: {}".format(kwargs))
@@ -590,6 +590,12 @@ class model(static_model):
                 while True:
                     forward = False
                     backward = False
+ 
+
+                    torch.cuda.empty_cache()
+                    sum_forward_elapse = time.time()
+                    outputs, losses = self.forward(data, target, precision=precision)
+                     
                     for loss in losses[:1]:
                             if precision=='mixed':
                                 scaler.scale(loss).backward()
@@ -597,9 +603,7 @@ class model(static_model):
                                 loss.backward()                    
                     try:
                         # [forward] making next step
-                        torch.cuda.empty_cache()
-                        sum_forward_elapse = time.time()
-                        outputs, losses = self.forward(data, target, precision=precision)
+
                         sum_forward_elapse = time.time() - sum_forward_elapse
                         forward = True
 
